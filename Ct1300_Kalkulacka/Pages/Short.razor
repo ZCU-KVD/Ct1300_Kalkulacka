@@ -15,9 +15,18 @@
 	<button @onclick="Podil" type="button" class="btn btn-danger">Podíl (/)</button>
 </div>
 <label>Výsledek: <input @bind="vysledek" readonly /></label>
+<hr />
+<label ><input @bind-value="kontrolaPreteceni" type="checkbox"/> Kontrola přetečení</label>
+@if (chybovaHlaska != string.Empty)
+{
+	<div class="alert alert-danger">
+		<strong>Danger!</strong> @chybovaHlaska
+	</div>
+}
 
 @code {
-
+	private bool kontrolaPreteceni = false;
+	private string chybovaHlaska = "";
 	/// <summary>
 	/// První vstupní číslo
 	/// </summary>
@@ -38,7 +47,26 @@
 	/// </summary>
 	private void Soucet()
 	{
-		vysledek = (short)(cislo1 + cislo2);
+		chybovaHlaska = string.Empty;
+		if (kontrolaPreteceni )
+		{
+			try
+			{
+				checked
+				{
+					vysledek = (short)(cislo1 + cislo2);
+				}
+			}
+			catch (Exception)
+			{
+				chybovaHlaska = "Došlo k přetečení";
+				
+			}
+			
+		}
+		else
+			vysledek = (short)(cislo1 + cislo2);
+		
 	}
 
 	/// <summary>
